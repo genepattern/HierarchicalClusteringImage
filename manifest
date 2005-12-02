@@ -1,0 +1,145 @@
+author=Joshua Gould, Broad Institute
+commandLine=<java> -Djava.awt.headless\=true <java_flags> -cp <libdir>hcl.jar<path.separator><libdir>gp-modules.jar org.genepattern.modules.hcl.RunHCLImage <cdt.filename> <output.file> <output.file.format> <gtr.filename> <atr.filename> -c<row.size> -r<column.size> -g<grid> -l<grid.color> -a<row.annotations> -s<row.names> -f<feature.list.filename> -h<highlight.color> -n<color.scheme> -m<color.map.filename>
+cpuType=any
+description=Creates an image of the dendrogram generated from HierarchicalClustering
+fileFormat=jpeg;png;tiff;bmp
+JVMLevel=1.4
+language=Java
+privacy=public
+quality=production
+taskType=Image Creators
+userid=gp-help@broad.mit.edu
+version=
+name=HierarchicalClusteringImage
+os=any
+
+p1_description=Clustered data table, contains the original data, but reordered
+p1_fileFormat=cdt
+p1_MODE=IN
+p1_name=cdt.filename
+p1_optional=
+p1_prefix_when_specified=
+p1_TYPE=FILE
+p1_type=java.io.File
+p1_value=
+
+p2_description=Gene Tree file, records the order in which genes (rows) were joined (at least one of gtr filename and atr filename is required)
+p2_fileFormat=gtr
+p2_MODE=IN
+p2_name=gtr.filename
+p2_optional=on
+p2_prefix_when_specified=
+p2_TYPE=FILE
+p2_type=java.io.File
+p2_value=
+
+p3_description=Array Tree file, records the order in which samples (columns) were joined (at least one of gtr filename and atr filename is required)
+p3_fileFormat=atr
+p3_MODE=IN
+p3_name=atr.filename
+p3_optional=on
+p3_prefix_when_specified=
+p3_TYPE=FILE
+p3_type=java.io.File
+p3_value=
+
+p4_default_value=<input.filename_basename>
+p4_description=The output file name -.jpeg, .png, .tiff, .bmp, .eps
+p4_name=output.file
+p4_optional=
+p4_prefix_when_specified=
+p4_type=java.lang.String
+p4_value=
+
+p5_default_value=jpeg
+p5_description=The output file format
+p5_name=output.file.format
+p5_optional=
+p5_prefix_when_specified=
+p5_type=java.lang.String
+p5_value=jpeg;png;tiff;bmp
+
+p6_default_value=8
+p6_description=The size in pixels of an element along the x axis
+p6_name=column.size
+p6_optional=
+p6_prefix_when_specified=
+p6_type=java.lang.Integer
+p6_value=
+
+p7_default_value=8
+p7_description=The size in pixels of an element along the y axis
+p7_name=row.size
+p7_optional=
+p7_prefix_when_specified=
+p7_type=java.lang.Integer
+p7_value=
+
+p8_default_value=yes
+p8_description=Whether to draw a grid between elements
+p8_name=grid
+p8_optional=on
+p8_prefix_when_specified=
+p8_type=java.lang.String
+p8_value=yes;no
+
+p9_default_value=black
+p9_description=The grid color
+p9_name=grid.color
+p9_optional=on
+p9_prefix_when_specified=
+p9_type=java.lang.String
+p9_value=0\:0\:0\=black;128\:128\:128\=grey;255\:255\:255\=white
+
+p10_default_value=no
+p10_description=Whether to draw row annotations
+p10_name=row.annotations
+p10_optional=on
+p10_prefix_when_specified=
+p10_type=java.lang.String
+p10_value=yes;no
+
+p11_default_value=yes
+p11_description=Whether to draw row names
+p11_name=row.names
+p11_optional=on
+p11_prefix_when_specified=
+p11_type=java.lang.String
+p11_value=yes;no
+
+p12_default_value=
+p12_description=Features to highlight in the heat map
+p12_MODE=IN
+p12_name=feature.list.filename
+p12_optional=on
+p12_prefix_when_specified=
+p12_TYPE=FILE
+p12_type=java.io.File
+p12_value=
+
+p13_default_value=
+p13_description=The color to highlight the features in the feature list
+p13_name=highlight.color
+p13_optional=on
+p13_prefix_when_specified=
+p13_type=java.lang.String
+p13_value=255\:0\:0\=red;255\:255\:0\=yellow;0\:0\:255\=blue
+
+p14_default_value=row normalized
+p14_description=The color scheme
+p14_name=color.scheme
+p14_optional=on
+p14_prefix_when_specified=
+p14_type=java.lang.String
+p14_value=row normalized;global
+
+p15_default_value=
+p15_description=Color map
+p15_MODE=IN
+p15_name=color.map.filename
+p15_optional=on
+p15_prefix_when_specified=
+p15_TYPE=FILE
+p15_type=java.io.File
+p15_value=
+
