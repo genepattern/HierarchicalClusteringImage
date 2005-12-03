@@ -3,17 +3,25 @@ package org.genepattern.modules.hcl;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.genepattern.data.expr.IExpressionData;
+import org.genepattern.clustering.hierarchical.image.HCLImage;
 import org.genepattern.heatmap.image.DisplaySettings;
+import org.genepattern.heatmap.image.FeatureAnnotator;
 import org.genepattern.heatmap.image.HeatMap;
 import org.genepattern.heatmap.image.RowColorConverter;
-import org.genepattern.io.expr.IExpressionDataReader;
+import org.genepattern.io.ParseException;
 import org.genepattern.module.AnalysisUtil;
 
 public class RunHCLImage {
 	public static void main(String[] args) {
+		String cdtFile = args[0];
+		String outputFileName = args[1];
+		String outputFileFormat = args[2];
+
+		String gtrFile = null;
+		String atrFile = null;
 		int columnWidth = 10;
 		int rowWidth = 10;
 		int normalization = HeatMap.COLOR_RESPONSE_ROW;
@@ -21,7 +29,7 @@ public class RunHCLImage {
 		boolean showGridLines = false;
 		boolean showGeneAnnotations = false;
 		boolean showGeneNames = true;
-		java.util.List featureList = null;
+		List featureList = null;
 		Color highlightColor = Color.red;
 		Color[] colorMap = null;
 		for (int i = 3; i < args.length; i++) { // 0th arg is input file name,
@@ -33,7 +41,11 @@ public class RunHCLImage {
 				continue;
 			}
 
-			if (arg.equals("-c")) {
+			if (arg.equals("-x")) {
+				gtrFile = value;
+			} else if (arg.equals("-y")) {
+				atrFile = value;
+			} else if (arg.equals("-c")) {
 				columnWidth = Integer.parseInt(value);
 			} else if (arg.equals("-r")) {
 				rowWidth = Integer.parseInt(value);
@@ -75,7 +87,7 @@ public class RunHCLImage {
 			ds.drawRowDescriptions = showGeneAnnotations;
 			ds.gridLinesColor = gridLinesColor;
 
-			final Map featureNames2Colors = new HashMap();;
+			final Map featureNames2Colors = new HashMap();
 			if (featureList != null) {
 				for (int i = 0; i < featureList.size(); i++) {
 					String name = (String) featureList.get(i);
@@ -84,7 +96,7 @@ public class RunHCLImage {
 
 			}
 			FeatureAnnotator fa = new FeatureAnnotator() {
-				public String getAnnotation(String feature, int j){
+				public String getAnnotation(String feature, int j) {
 					return null;
 				}
 
@@ -92,16 +104,16 @@ public class RunHCLImage {
 					return 0;
 				}
 
-
 				public List getColors(String featureName) {
 					return (List) featureNames2Colors.get(featureName);
 				}
 			};
-			
-			HCLImage.saveImage(cdtFile, gtrFile,
-			atrFile,  ds,  null, fa,  outputFileName,  outputFileFormat);
+
+			HCLImage.saveImage(cdtFile, gtrFile, atrFile, ds, null, fa,
+					outputFileName, outputFileFormat);
 		} catch (Exception e) {
-			if (e instanceof IOException || e instanceof ParseException || e instanceof RuntimeException) {
+			if (e instanceof IOException || e instanceof ParseException
+					|| e instanceof RuntimeException) {
 				AnalysisUtil.exit(e.getMessage());
 			} else {
 				AnalysisUtil.exit("An error occurred while saving the image.");
