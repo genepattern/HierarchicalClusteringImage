@@ -43,7 +43,7 @@ p3_TYPE=FILE
 p3_type=java.io.File
 p3_value=
 
-p4_default_value=<input.filename_basename>
+p4_default_value=<cdt.filename_basename>
 p4_description=The output file name -.jpeg, .png, .tiff, .bmp, .eps
 p4_name=output.file
 p4_optional=
