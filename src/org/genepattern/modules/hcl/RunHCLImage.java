@@ -1,15 +1,14 @@
 /*
-  The Broad Institute
-  SOFTWARE COPYRIGHT NOTICE AGREEMENT
-  This software and its documentation are copyright (2003-2006) by the
-  Broad Institute/Massachusetts Institute of Technology. All rights are
-  reserved.
+ The Broad Institute
+ SOFTWARE COPYRIGHT NOTICE AGREEMENT
+ This software and its documentation are copyright (2003-2006) by the
+ Broad Institute/Massachusetts Institute of Technology. All rights are
+ reserved.
 
-  This software is supplied without any warranty or guaranteed support
-  whatsoever. Neither the Broad Institute nor MIT can be responsible for its
-  use, misuse, or functionality.
-*/
-
+ This software is supplied without any warranty or guaranteed support
+ whatsoever. Neither the Broad Institute nor MIT can be responsible for its
+ use, misuse, or functionality.
+ */
 
 package org.genepattern.modules.hcl;
 
@@ -23,7 +22,7 @@ import org.genepattern.clustering.hierarchical.image.HCLImage;
 import org.genepattern.heatmap.image.DisplaySettings;
 import org.genepattern.heatmap.image.FeatureAnnotator;
 import org.genepattern.heatmap.image.HeatMap;
-import org.genepattern.heatmap.image.RowColorConverter;
+import org.genepattern.heatmap.RowColorConverter;
 import org.genepattern.io.ParseException;
 import org.genepattern.module.AnalysisUtil;
 
@@ -94,7 +93,12 @@ public class RunHCLImage {
 			DisplaySettings ds = new DisplaySettings();
 			ds.columnSize = columnWidth;
 			ds.rowSize = rowWidth;
-			ds.colorScheme = normalization;
+			if (normalization == HeatMap.COLOR_RESPONSE_ROW) {
+				ds.colorConverter = RowColorConverter.getRowInstance(_colorMap);
+			} else {
+				ds.colorConverter = RowColorConverter
+						.getGlobalInstance(_colorMap);
+			}
 			ds.drawGrid = showGridLines;
 			ds.drawRowNames = showGeneNames;
 			ds.drawRowDescriptions = showGeneAnnotations;
