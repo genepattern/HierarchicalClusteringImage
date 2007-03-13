@@ -57,7 +57,7 @@ p5_name=output.file.format
 p5_optional=
 p5_prefix_when_specified=
 p5_type=java.lang.String
-p5_value=jpeg;png;tiff;bmp
+p5_value=eps;jpeg;png;tiff;bmp
 
 p6_default_value=8
 p6_description=The size in pixels of an element along the x axis
