@@ -9,7 +9,7 @@
 		<property name="appfile" value="hcl.jar"/>
 		<property name="inclds" value="org/"/>
 		<path id="library.classpath">
-			<fileset id="jar.lib" dir="${libpath}" includes="jai_codec.jar, jai_core.jar, broad-cg.jar, gp-modules.jar, Jama-1.0.1.jar, trove.jar, epsgraphics.jar">
+			<fileset id="jar.lib" dir="${libpath}" includes="jai_codec.jar, jai_core.jar, gp-modules.jar, Jama-1.0.1.jar, trove.jar, freehep-base.jar, freehep-graphics2d.jar, freehep-graphicsio.jar, freehep-graphicsio-ps.jar">
 			</fileset>
 		</path>
 		
@@ -40,9 +40,8 @@
 		<antcall target="prezip"/>
 		
 		<zip destfile="${dest.dir}/${ant.project.name}.zip" whenempty="fail" defaultexcludes="true">
-			<fileset dir="." includes="manifest, ${appfile}"/>
+			<fileset dir="." includes="manifest, ${appfile}, *.pdf"/>
 			<fileset refid="jar.lib"/>  
-			<fileset dir="." includes="*.pdf"/>
 		</zip>
 		<antcall target="postzip"/>
 	</target>
