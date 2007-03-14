@@ -1,5 +1,5 @@
 author=Joshua Gould, Broad Institute
-commandLine=<java> -Djava.awt.headless\=true <java_flags> -cp <libdir>hcl.jar<path.separator><libdir>gp-modules.jar org.genepattern.modules.hcl.RunHCLImage <cdt.filename> <output.file> <output.file.format> -x<gtr.filename> -y<atr.filename> -c<row.size> -r<column.size> -g<grid> -l<grid.color> -a<row.annotations> -s<row.names> -f<feature.list.filename> -h<highlight.color> -n<color.scheme> -m<color.map.filename>
+commandLine=<java> -Djava.awt.headless\=true <java_flags> -cp <libdir>hcl.jar<path.separator><libdir>gp-modules.jar org.genepattern.modules.hcl.RunHCLImage <cdt.filename> <output.file> <output.file.format> -x<gtr.filename> -y<atr.filename> -c<row.size> -r<column.size> -g<grid> -l<grid.color> -a<row.annotations> -s<row.names> -f<feature.list.filename> -h<highlight.color> -n<color.scheme>
 cpuType=any
 description=Creates an image of the dendrogram generated from HierarchicalClustering
 fileFormat=jpeg;png;tiff;bmp;eps
@@ -44,7 +44,7 @@ p3_type=java.io.File
 p3_value=
 
 p4_default_value=<cdt.filename_basename>
-p4_description=The output file name -.jpeg, .png, .tiff, .bmp, .eps
+p4_description=The output file name - .bmp, .eps, .jpeg, .png, .tiff
 p4_name=output.file
 p4_optional=
 p4_prefix_when_specified=
@@ -57,7 +57,7 @@ p5_name=output.file.format
 p5_optional=
 p5_prefix_when_specified=
 p5_type=java.lang.String
-p5_value=eps;jpeg;png;tiff;bmp
+p5_value=eps;bmp;jpeg;png;tiff
 
 p6_default_value=8
 p6_description=The size in pixels of an element along the x axis
@@ -133,13 +133,4 @@ p14_prefix_when_specified=
 p14_type=java.lang.String
 p14_value=row normalized;global
 
-p15_default_value=
-p15_description=Color map
-p15_MODE=IN
-p15_name=color.map.filename
-p15_optional=on
-p15_prefix_when_specified=
-p15_TYPE=FILE
-p15_type=java.io.File
-p15_value=
 
