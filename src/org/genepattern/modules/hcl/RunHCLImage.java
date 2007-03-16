@@ -14,6 +14,7 @@ package org.genepattern.modules.hcl;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,10 +104,12 @@ public class RunHCLImage {
             ds.gridLinesColor = gridLinesColor;
 
             final Map featureNames2Colors = new HashMap();
+            List colors = new ArrayList();
+            colors.add(highlightColor);
             if (featureList != null) {
                 for (int i = 0; i < featureList.size(); i++) {
                     String name = (String) featureList.get(i);
-                    featureNames2Colors.put(name, highlightColor);
+                    featureNames2Colors.put(name, colors);
                 }
 
             }
@@ -126,7 +129,7 @@ public class RunHCLImage {
 
             HCLImage.saveImage(cdtFile, gtrFile, atrFile, ds, null, fa, outputFileName, outputFileFormat);
         } catch (Exception e) {
-            if (e instanceof IOException || e instanceof ParseException || e instanceof RuntimeException) {
+            if (e instanceof IOException || e instanceof ParseException) {
                 String message = e.getMessage();
                 if (message != null && !message.equals("")) {
                     AnalysisUtil.exit(e.getMessage());
