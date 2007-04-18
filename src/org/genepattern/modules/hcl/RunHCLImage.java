@@ -36,7 +36,6 @@ public class RunHCLImage extends RunHeatMapImage {
 
     private CdtParser cdtParser = new CdtParser();
 
-
     protected HeatMap createHeatMap() {
         int featureTreeWidth = 150;
         int sampleTreeHeight = 150;
@@ -70,7 +69,7 @@ public class RunHCLImage extends RunHeatMapImage {
 
     }
 
-    protected Dataset parseDataset(String inputFileName) {
+    protected Dataset parseDataset() {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(inputFileName);
