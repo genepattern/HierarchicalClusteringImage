@@ -12,136 +12,111 @@
 
 package org.genepattern.modules.hcl;
 
-import java.awt.Color;
+import java.awt.Dimension;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.genepattern.clustering.hierarchical.image.HCLImage;
-import org.genepattern.heatmap.RowColorScheme;
-import org.genepattern.heatmap.image.DisplaySettings;
-import org.genepattern.heatmap.image.FeatureAnnotator;
-import org.genepattern.heatmap.image.HeatMapImageDrawer;
+import javax.swing.JPanel;
+
+import org.genepattern.clustering.hierarchical.AtrGtrReader;
+import org.genepattern.clustering.hierarchical.FeatureTreePanel;
+import org.genepattern.clustering.hierarchical.SampleTreePanel;
+import org.genepattern.heatmap.HeatMap;
 import org.genepattern.io.ParseException;
+import org.genepattern.io.stanford.CdtParser;
+import org.genepattern.matrix.Dataset;
 import org.genepattern.module.AnalysisUtil;
+import org.genepattern.modules.heatmap.RunHeatMapImage;
 
-public class RunHCLImage {
-    public static void main(String[] args) {
-        String cdtFile = args[0];
-        String outputFileName = args[1];
-        String outputFileFormat = args[2];
+public class RunHCLImage extends RunHeatMapImage {
+    private AtrGtrReader atrReader;
 
-        String gtrFile = null;
-        String atrFile = null;
-        int columnWidth = 10;
-        int rowWidth = 10;
-        int normalization = HeatMapImageDrawer.COLOR_RESPONSE_ROW;
-        Color gridLinesColor = Color.black;
-        boolean showGridLines = false;
-        boolean showGeneAnnotations = false;
-        boolean showGeneNames = true;
-        List featureList = null;
-        Color highlightColor = Color.red;
-        Color[] colorMap = null;
-        for (int i = 3; i < args.length; i++) { // 0th arg is input file name,
-            // 1st arg is output file name,
-            // 2nd arg is format
-            String arg = args[i].substring(0, 2);
-            String value = args[i].substring(2, args[i].length());
-            if (value.equals("")) {
-                continue;
+    private AtrGtrReader gtrReader;
+
+    private CdtParser cdtParser = new CdtParser();
+
+
+    protected HeatMap createHeatMap() {
+        int featureTreeWidth = 150;
+        int sampleTreeHeight = 150;
+        FeatureTreePanel featureTree = null;
+        if (gtrReader != null) {
+            featureTree = new FeatureTreePanel(gtrReader);
+            featureTree.setElementHeight(rowSize);
+            Dimension size = new Dimension(featureTreeWidth, featureTree.getPreferredSize().height);
+            featureTree.setPreferredSize(size);
+            featureTree.setSize(size);
+        }
+        SampleTreePanel sampleTree = null;
+        if (atrReader != null) {
+            sampleTree = new SampleTreePanel(atrReader);
+            sampleTree.setElementWidth(columnSize);
+            Dimension size = new Dimension(sampleTree.getPreferredSize().width, sampleTreeHeight);
+            sampleTree.setPreferredSize(size);
+            sampleTree.setSize(size);
+        }
+        return new HeatMap(new JPanel(), data, featureTree, sampleTree);
+    }
+
+    protected void parseArg(String arg, String value) {
+        if (arg.equals("-x")) {
+            parseGtr(value);
+        } else if (arg.equals("-y")) {
+            parseAtr(value);
+        } else {
+            throw new IllegalArgumentException();
+        }
+
+    }
+
+    protected Dataset parseDataset(String inputFileName) {
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(inputFileName);
+            cdtParser.parse(fis);
+        } catch (IOException e) {
+            AnalysisUtil.exit("An error occurred while reading the file " + new File(inputFileName).getName() + ".");
+        } catch (ParseException e) {
+            String message = e.getMessage();
+            String error = "An error occurred while reading the file " + new File(inputFileName).getName() + ".";
+            if (message != null && message.length() > 0) {
+                error += "\n" + message;
             }
-
-            if (arg.equals("-x")) {
-                gtrFile = value;
-            } else if (arg.equals("-y")) {
-                atrFile = value;
-            } else if (arg.equals("-c")) {
-                columnWidth = Integer.parseInt(value);
-            } else if (arg.equals("-r")) {
-                rowWidth = Integer.parseInt(value);
-            } else if (arg.equals("-n")) {
-                if (value.equals("global")) {
-                    normalization = HeatMapImageDrawer.COLOR_RESPONSE_GLOBAL;
-                } else if (value.equals("row normalized")) {
-                    normalization = HeatMapImageDrawer.COLOR_RESPONSE_ROW;
+            AnalysisUtil.exit(error);
+        } finally {
+            try {
+                if (fis != null) {
+                    fis.close();
                 }
-
-            } else if (arg.equals("-g")) {
-                showGridLines = "yes".equalsIgnoreCase(value);
-            } else if (arg.equals("-l")) {
-                // r:g:b triplet
-                gridLinesColor = HeatMapImageDrawer.createColor(value);
-            } else if (arg.equals("-a")) {
-                showGeneAnnotations = "yes".equalsIgnoreCase(value);
-            } else if (arg.equals("-s")) {
-                showGeneNames = "yes".equalsIgnoreCase(value);
-            } else if (arg.equals("-f")) {
-                featureList = AnalysisUtil.readFeatureList(value);
-            } else if (arg.equals("-h")) {
-                highlightColor = HeatMapImageDrawer.createColor(value);
-            } else if (arg.equals("-m")) {
-                colorMap = HeatMapImageDrawer.parseColorMap(value);
-            } else {
-                AnalysisUtil.exit("unknown option " + arg);
+            } catch (IOException e) {
             }
         }
-        Color[] _colorMap = colorMap != null ? colorMap : RowColorScheme.getDefaultColorMap();
-        try {
-            DisplaySettings ds = new DisplaySettings();
-            ds.columnSize = columnWidth;
-            ds.rowSize = rowWidth;
-            if (normalization == HeatMapImageDrawer.COLOR_RESPONSE_ROW) {
-                ds.colorConverter = RowColorScheme.getRowInstance(_colorMap);
-            } else {
-                ds.colorConverter = RowColorScheme.getGlobalInstance(_colorMap);
+        return cdtParser.getDataset();
+    }
+
+    private void parseAtr(String atrFile) {
+        if (atrFile != null) {
+            try {
+                atrReader = new AtrGtrReader(cdtParser.getArrayIds(), atrFile);
+            } catch (IOException e) {
+                AnalysisUtil.exit("An error occurred while reading the file " + new File(atrFile).getName() + ".");
             }
-            ds.drawGrid = showGridLines;
-            ds.drawRowNames = showGeneNames;
-            ds.drawRowDescriptions = showGeneAnnotations;
-            ds.gridLinesColor = gridLinesColor;
-
-            final Map featureNames2Colors = new HashMap();
-            List colors = new ArrayList();
-            colors.add(highlightColor);
-            if (featureList != null) {
-                for (int i = 0; i < featureList.size(); i++) {
-                    String name = (String) featureList.get(i);
-                    featureNames2Colors.put(name, colors);
-                }
-
-            }
-            FeatureAnnotator fa = new FeatureAnnotator() {
-                public String getAnnotation(String feature, int j) {
-                    return null;
-                }
-
-                public int getColumnCount() {
-                    return 0;
-                }
-
-                public List getColors(String featureName) {
-                    return (List) featureNames2Colors.get(featureName);
-                }
-            };
-
-            HCLImage.saveImage(cdtFile, gtrFile, atrFile, ds, null, fa, outputFileName, outputFileFormat);
-        } catch (Exception e) {
-            if (e instanceof IOException || e instanceof ParseException) {
-                String message = e.getMessage();
-                if (message != null && !message.equals("")) {
-                    AnalysisUtil.exit(e.getMessage());
-                } else {
-                    AnalysisUtil.exit("An error occurred while saving the image.");
-                }
-
-            } else {
-                AnalysisUtil.exit("An error occurred while saving the image.");
-            }
-        } catch (OutOfMemoryError ome) {
-            AnalysisUtil.exit("Not enough memory available to save the image.");
         }
     }
+
+    private void parseGtr(String gtrFile) {
+        if (gtrFile != null) {
+            try {
+                gtrReader = new AtrGtrReader((String[]) cdtParser.getGeneIds().toArray(new String[0]), gtrFile);
+            } catch (IOException e) {
+                AnalysisUtil.exit("An error occurred while reading the file " + new File(gtrFile).getName() + ".");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new RunHCLImage().parse(args);
+    }
+
 }

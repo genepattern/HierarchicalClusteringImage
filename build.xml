@@ -2,48 +2,57 @@
 <!-- Ant build file -->
 
 <project basedir="" default="package" name="HierarchicalClusteringImage">
-	<property name="dirOffset" value="../"/>
-	<import file="${dirOffset}/commontargets.xml"/>
-	
+	<property name="dirOffset" value="../" />
+	<import file="${dirOffset}/commontargets.xml" />
+
 	<target name="_init" depends="init">
-		<property name="appfile" value="hcl.jar"/>
-		<property name="inclds" value="org/"/>
+		<property name="appfile" value="hcl.jar" />
+		<property name="inclds" value="org/" />
 		<path id="library.classpath">
-			<fileset id="jar.lib" dir="${libpath}" includes="jai_codec.jar, jai_core.jar, gp-modules.jar, Jama-1.0.1.jar, trove.jar, freehep-base.jar, freehep-graphics2d.jar, freehep-graphicsio.jar, freehep-graphicsio-ps.jar">
-			</fileset>
+			<fileset id="jar.lib" dir="${libpath}" includes="jai_codec.jar, jai_core.jar, gp-modules.jar, Jama-1.0.1.jar, trove.jar, freehep-base.jar, freehep-graphics2d.jar, freehep-graphicsio.jar, freehep-graphicsio-ps.jar" />
+			<fileset id="jar2.lib" dir="../HeatMapImage/" includes="HeatMap.jar" />
 		</path>
-		
 	</target>
 
-	
 	<target name="package" depends="_init, clean, compile">
-		<jar basedir="." defaultexcludes="true" excludes="**/*.java, **/*.form, **/.nbattrs" includes="${inclds}" jarfile="${appfile}"></jar>
+		<jar basedir="." defaultexcludes="true" includes="${inclds}" jarfile="${appfile}">
+		</jar>
 	</target>
-	
+
 	<target name="clean">
 		<delete>
-			<fileset dir="." includes="**/*.class"/>
+			<fileset dir="." includes="**/*.class" />
 		</delete>
 	</target>
-	
+
 	<target name="compile" depends="_init">
 		<javac debug="true" defaultexcludes="true" deprecation="true" destdir="." includes="${inclds}" optimize="false" proceed="false" srcdir="src" target="${java.target}" source="${java.target}">
-			<classpath refid="library.classpath"/>
+			<classpath refid="library.classpath" />
 		</javac>
 	</target>
-   
 
-	
-	<target depends="clean,compile" name="build"/>
-	
+	<target depends="clean,compile" name="build" />
+
 	<target depends="_init, package" name="create-zip">
-		<antcall target="prezip"/>
-		
+		<antcall target="prezip" />
 		<zip destfile="${dest.dir}/${ant.project.name}.zip" whenempty="fail" defaultexcludes="true">
-			<fileset dir="." includes="manifest, ${appfile}, *.pdf"/>
-			<fileset refid="jar.lib"/>  
+			<fileset dir="." includes="manifest, ${appfile}, *.pdf" />
+			<fileset refid="jar.lib" />
 		</zip>
-		<antcall target="postzip"/>
+		<antcall target="postzip" />
+	</target>
+
+	<target depends="_init" name="run">
+		<java maxmemory="1024m" classname="org.genepattern.modules.hcl.RunHCLImage" fork="true">
+			<sysproperty key="java.awt.headless" value="true" />
+			<arg value="/Users/jgould/datasets/hcl/all_aml_train-preprocessed.cdt" />
+			<arg value="out" />
+			<arg value="jpeg" />
+			<arg value="-x/Users/jgould/datasets/hcl/all_aml_train-preprocessed.gtr" />
+			<arg value="-y/Users/jgould/datasets/hcl/all_aml_train-preprocessed.atr" />
+			<classpath refid="library.classpath" />
+			<classpath location="." />
+		</java>
 	</target>
 
 </project>
