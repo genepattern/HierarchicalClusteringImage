@@ -1,5 +1,5 @@
 author=Joshua Gould, Broad Institute
-commandLine=<java> -Djava.awt.headless\=true <java_flags> -cp <libdir>hcl.jar<path.separator><libdir>HeatMap.jar<path.separator><libdir>gp-modules.jar org.genepattern.modules.hcl.RunHCLImage <cdt> <output> <output.format> -c<row.size> -r<column.size> -g<show.grid> -l<grid.color> -a<show.row.descriptions> -s<show.row.names> -f<rows.to.highlight> -h<row.highlight.color> -n<color.scheme> -m<color.map> -x<gtr> -y<atr>
+commandLine=<java> -Djava.awt.headless\=true <java_flags> -cp <libdir>hcl.jar<path.separator><libdir>HeatMap.jar<path.separator><libdir>gp-modules.jar org.genepattern.modules.hcl.RunHCLImage <cdt> <output> <output.format> -c<row.size> -r<column.size> -g<show.grid> -l<grid.color> -a<show.row.descriptions> -s<show.row.names> -f<rows.to.highlight> -h<row.highlight.color> -n<color.scheme> -m<color.palette> -x<gtr> -y<atr>
  
 cpuType=any
 description=Creates an image of the dendrogram generated from HierarchicalClustering
@@ -135,9 +135,9 @@ p14_type=java.lang.String
 p14_value=row normalized;global
 
 p15_default_value=
-p15_description=Color map file
+p15_description=Color palette consisting of one r:g:b triplet or one hex value per line
 p15_MODE=IN
-p15_name=color.map
+p15_name=color.palette
 p15_optional=on
 p15_prefix_when_specified=
 p15_TYPE=FILE
