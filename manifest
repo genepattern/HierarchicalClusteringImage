@@ -1,6 +1,6 @@
 author=Joshua Gould, Broad Institute
-commandLine=<java> -Djava.awt.headless\=true <java_flags> -cp <libdir>hcl.jar<path.separator><libdir>HeatMap.jar<path.separator><libdir>gp-modules.jar org.genepattern.modules.hcl.RunHCLImage <cdt> <output> <output.format> -c<row.size> -r<column.size> -g<show.grid> -l<grid.color> -a<show.row.descriptions> -s<show.row.names> -f<rows.to.highlight> -h<row.highlight.color> -n<color.scheme> -m<color.palette> -x<gtr> -y<atr>
- 
+commandLine=<java> -Djava.awt.headless\=true <java_flags> -cp <libdir>hcl.jar<path.separator><libdir>gp-modules.jar org.genepattern.modules.hcl.RunHCLImage <cdt> <output> <output.format> -c<row.size> -r<column.size> -g<show.grid> -l<grid.color> -a<show.row.descriptions> -s<show.row.names> -f<rows.to.highlight> -h<row.highlight.color> -n<color.scheme> -m<color.palette> -x<gtr> -y<atr>
+
 cpuType=any
 description=Creates an image of the dendrogram generated from HierarchicalClustering
 fileFormat=jpeg;png;tiff;bmp;eps
@@ -10,7 +10,7 @@ privacy=public
 quality=production
 taskType=Image Creators
 userid=gp-help@broad.mit.edu
-version=
+version=added color palette parameter
 name=HierarchicalClusteringImage
 os=any
 
