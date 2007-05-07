@@ -23,9 +23,11 @@ import org.genepattern.clustering.hierarchical.AtrGtrReader;
 import org.genepattern.clustering.hierarchical.FeatureTreePanel;
 import org.genepattern.clustering.hierarchical.SampleTreePanel;
 import org.genepattern.heatmap.HeatMap;
+import org.genepattern.io.DefaultDatasetCreator;
 import org.genepattern.io.ParseException;
 import org.genepattern.io.stanford.CdtParser;
 import org.genepattern.matrix.Dataset;
+import org.genepattern.matrix.DatasetConstants;
 import org.genepattern.module.AnalysisUtil;
 import org.genepattern.modules.heatmap.RunHeatMapImage;
 
@@ -33,8 +35,6 @@ public class RunHCLImage extends RunHeatMapImage {
     private AtrGtrReader atrReader;
 
     private AtrGtrReader gtrReader;
-
-    private CdtParser cdtParser = new CdtParser();
 
     protected HeatMap createHeatMap() {
         int featureTreeWidth = 150;
@@ -71,6 +71,9 @@ public class RunHCLImage extends RunHeatMapImage {
 
     protected Dataset parseDataset() {
         FileInputStream fis = null;
+        CdtParser cdtParser = new CdtParser();
+        DefaultDatasetCreator creator = new DefaultDatasetCreator();
+        cdtParser.setHandler(creator);
         try {
             fis = new FileInputStream(inputFileName);
             cdtParser.parse(fis);
@@ -91,13 +94,17 @@ public class RunHCLImage extends RunHeatMapImage {
             } catch (IOException e) {
             }
         }
-        return cdtParser.getDataset();
+        return creator.create();
     }
 
     private void parseAtr(String atrFile) {
         if (atrFile != null) {
             try {
-                atrReader = new AtrGtrReader(cdtParser.getArrayIds(), atrFile);
+                String[] arrayIds = new String[data.getColumnCount()];
+                for (int j = 0, columns = data.getColumnCount(); j < columns; j++) {
+                    arrayIds[j] = data.getColumnMetadata(j, DatasetConstants.ARRAY_ID);
+                }
+                atrReader = new AtrGtrReader(arrayIds, atrFile);
             } catch (IOException e) {
                 AnalysisUtil.exit("An error occurred while reading the file " + new File(atrFile).getName() + ".");
             }
@@ -107,7 +114,11 @@ public class RunHCLImage extends RunHeatMapImage {
     private void parseGtr(String gtrFile) {
         if (gtrFile != null) {
             try {
-                gtrReader = new AtrGtrReader((String[]) cdtParser.getGeneIds().toArray(new String[0]), gtrFile);
+                String[] geneIds = new String[data.getRowCount()];
+                for (int i = 0, rows = data.getRowCount(); i < rows; i++) {
+                    geneIds[i] = data.getRowMetadata(i, DatasetConstants.GENE_ID);
+                }
+                gtrReader = new AtrGtrReader(geneIds, gtrFile);
             } catch (IOException e) {
                 AnalysisUtil.exit("An error occurred while reading the file " + new File(gtrFile).getName() + ".");
             }
