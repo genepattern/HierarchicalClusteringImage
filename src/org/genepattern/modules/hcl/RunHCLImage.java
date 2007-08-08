@@ -36,97 +36,100 @@ public class RunHCLImage extends RunHeatMapImage {
 
     private AtrGtrReader gtrReader;
 
+    @Override
     protected HeatMap createHeatMap() {
-        int featureTreeWidth = 150;
-        int sampleTreeHeight = 150;
-        FeatureTreePanel featureTree = null;
-        if (gtrReader != null) {
-            featureTree = new FeatureTreePanel(gtrReader);
-            featureTree.setElementHeight(rowSize);
-            Dimension size = new Dimension(featureTreeWidth, featureTree.getPreferredSize().height);
-            featureTree.setPreferredSize(size);
-            featureTree.setSize(size);
-        }
-        SampleTreePanel sampleTree = null;
-        if (atrReader != null) {
-            sampleTree = new SampleTreePanel(atrReader);
-            sampleTree.setElementWidth(columnSize);
-            Dimension size = new Dimension(sampleTree.getPreferredSize().width, sampleTreeHeight);
-            sampleTree.setPreferredSize(size);
-            sampleTree.setSize(size);
-        }
-        return new HeatMap(new JPanel(), data, featureTree, sampleTree);
+	int featureTreeWidth = 150;
+	int sampleTreeHeight = 150;
+	FeatureTreePanel featureTree = null;
+	if (gtrReader != null) {
+	    featureTree = new FeatureTreePanel(gtrReader);
+	    featureTree.setElementHeight(rowSize);
+	    Dimension size = new Dimension(featureTreeWidth, featureTree.getPreferredSize().height);
+	    featureTree.setPreferredSize(size);
+	    featureTree.setSize(size);
+	}
+	SampleTreePanel sampleTree = null;
+	if (atrReader != null) {
+	    sampleTree = new SampleTreePanel(atrReader);
+	    sampleTree.setElementWidth(columnSize);
+	    Dimension size = new Dimension(sampleTree.getPreferredSize().width, sampleTreeHeight);
+	    sampleTree.setPreferredSize(size);
+	    sampleTree.setSize(size);
+	}
+	return new HeatMap(new JPanel(), data, featureTree, sampleTree);
     }
 
+    @Override
     protected void parseArg(String arg, String value) {
-        if (arg.equals("-x")) {
-            parseGtr(value);
-        } else if (arg.equals("-y")) {
-            parseAtr(value);
-        } else {
-            throw new IllegalArgumentException();
-        }
+	if (arg.equals("-x")) {
+	    parseGtr(value);
+	} else if (arg.equals("-y")) {
+	    parseAtr(value);
+	} else {
+	    throw new IllegalArgumentException();
+	}
 
     }
 
+    @Override
     protected Dataset parseDataset() {
-        FileInputStream fis = null;
-        CdtParser cdtParser = new CdtParser();
-        DefaultDatasetCreator creator = new DefaultDatasetCreator();
-        cdtParser.setHandler(creator);
-        try {
-            fis = new FileInputStream(inputFileName);
-            cdtParser.parse(fis);
-        } catch (IOException e) {
-            AnalysisUtil.exit("An error occurred while reading the file " + new File(inputFileName).getName() + ".");
-        } catch (ParseException e) {
-            String message = e.getMessage();
-            String error = "An error occurred while reading the file " + new File(inputFileName).getName() + ".";
-            if (message != null && message.length() > 0) {
-                error += "\n" + message;
-            }
-            AnalysisUtil.exit(error);
-        } finally {
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-            } catch (IOException e) {
-            }
-        }
-        return creator.create();
+	FileInputStream fis = null;
+	CdtParser cdtParser = new CdtParser();
+	DefaultDatasetCreator creator = new DefaultDatasetCreator();
+	cdtParser.setHandler(creator);
+	try {
+	    fis = new FileInputStream(inputFileName);
+	    cdtParser.parse(fis);
+	} catch (IOException e) {
+	    AnalysisUtil.exit("An error occurred while reading the file " + new File(inputFileName).getName() + ".");
+	} catch (ParseException e) {
+	    String message = e.getMessage();
+	    String error = "An error occurred while reading the file " + new File(inputFileName).getName() + ".";
+	    if (message != null && message.length() > 0) {
+		error += "\n" + message;
+	    }
+	    AnalysisUtil.exit(error);
+	} finally {
+	    try {
+		if (fis != null) {
+		    fis.close();
+		}
+	    } catch (IOException e) {
+	    }
+	}
+	return creator.create();
     }
 
     private void parseAtr(String atrFile) {
-        if (atrFile != null) {
-            try {
-                String[] arrayIds = new String[data.getColumnCount()];
-                for (int j = 0, columns = data.getColumnCount(); j < columns; j++) {
-                    arrayIds[j] = data.getColumnMetadata(j, DatasetConstants.ARRAY_ID);
-                }
-                atrReader = new AtrGtrReader(arrayIds, atrFile);
-            } catch (IOException e) {
-                AnalysisUtil.exit("An error occurred while reading the file " + new File(atrFile).getName() + ".");
-            }
-        }
+	if (atrFile != null) {
+	    try {
+		String[] arrayIds = new String[data.getColumnCount()];
+		for (int j = 0, columns = data.getColumnCount(); j < columns; j++) {
+		    arrayIds[j] = data.getColumnMetadata(j, DatasetConstants.ARRAY_ID);
+		}
+		atrReader = new AtrGtrReader(arrayIds, atrFile);
+	    } catch (IOException e) {
+		AnalysisUtil.exit("An error occurred while reading the file " + new File(atrFile).getName() + ".");
+	    }
+	}
     }
 
     private void parseGtr(String gtrFile) {
-        if (gtrFile != null) {
-            try {
-                String[] geneIds = new String[data.getRowCount()];
-                for (int i = 0, rows = data.getRowCount(); i < rows; i++) {
-                    geneIds[i] = data.getRowMetadata(i, DatasetConstants.GENE_ID);
-                }
-                gtrReader = new AtrGtrReader(geneIds, gtrFile);
-            } catch (IOException e) {
-                AnalysisUtil.exit("An error occurred while reading the file " + new File(gtrFile).getName() + ".");
-            }
-        }
+	if (gtrFile != null) {
+	    try {
+		String[] geneIds = new String[data.getRowCount()];
+		for (int i = 0, rows = data.getRowCount(); i < rows; i++) {
+		    geneIds[i] = data.getRowMetadata(i, DatasetConstants.GENE_ID);
+		}
+		gtrReader = new AtrGtrReader(geneIds, gtrFile);
+	    } catch (IOException e) {
+		AnalysisUtil.exit("An error occurred while reading the file " + new File(gtrFile).getName() + ".");
+	    }
+	}
     }
 
     public static void main(String[] args) {
-        new RunHCLImage().parse(args);
+	new RunHCLImage().parse(args);
     }
 
 }
