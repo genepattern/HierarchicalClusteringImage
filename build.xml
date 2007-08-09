@@ -38,4 +38,15 @@
 		</java>
 	</target>
 
+	<target depends="init" name="run">
+		<java maxmemory="512m" classname="org.genepattern.module.hclimage.RunHCLImage" fork="true" classpath="../${OPTIMIZED_JAR}">
+			<sysproperty key="java.awt.headless" value="true" />
+			<arg value="all_aml_train-preprocessed.cdt" />
+			<arg value="out" />
+			<arg value="jpeg" />
+			<arg value="-xtest/all_aml_train-preprocessed.gtr" />
+			<arg value="-ytest/all_aml_train-preprocessed.atr" />
+			
+		</java>
+	</target>
 </project>
