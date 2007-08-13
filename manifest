@@ -10,7 +10,7 @@ privacy=public
 quality=production
 taskType=Image Creators
 userid=gp-help@broad.mit.edu
-version=Fixed bug in color scheme.
+version=Fixed bug in discrete color scheme. Added gradient color scheme option.
 name=HierarchicalClusteringImage
 os=any
 
