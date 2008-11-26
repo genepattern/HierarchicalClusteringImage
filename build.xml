@@ -6,7 +6,7 @@
 	<import file="${dirOffset}/commontargets.xml" />
 
 	<target depends="init" name="_init">
-		<fileset id="jars.to.include" dir="${libpath}" includes="gp-modules.jar forms-* Jama-1.0.1.jar trove.jar" />
+		<fileset id="jars.to.include" dir="${libpath}" includes="gp-modules.jar forms-* Jama-1.0.2.jar trove.jar" />
 	</target>
 
 	<target depends="package-o" name="create-zip">
