@@ -1,7 +1,8 @@
+#Fri, 16 Nov 2012 15:29:01 -0500
 #HierarchicalClusteringImage
 #Fri Nov 16 14:24:55 EST 2012
 JVMLevel=1.5
-LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00071\:3
+LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00071\:${test.version}
 author=Joshua Gould, Broad Institute
 commandLine=<java> -Djava.awt.headless\=true <java_flags> -jar <libdir>hclimage-o.jar <cdt> <output> <output.format> -r<row.size> -c<column.size> -g<show.grid> -l<grid.color> -a<show.row.descriptions> -s<show.row.names> -f<rows.to.highlight> -h<row.highlight.color> -n<color.scheme> -m<color.palette> -x<gtr> -y<atr> -u<use.color.gradient>
 cpuType=any
@@ -143,3 +144,5 @@ taskDoc=
 taskType=Image Creators
 userid=gp-help@broad.mit.edu
 version=Fixed row/column size transposing
+
+publicationDate=11/16/2012 15\:29 

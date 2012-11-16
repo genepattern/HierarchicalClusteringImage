@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="" default="create-zip" name="HierarchicalClusteringImage">
+<!-- # I have commented out sections that would build the jar from source, as that does not work -->
+
+<project basedir="." default="create-zip" name="HierarchicalClusteringImage">
 	<property name="dirOffset" value="../" />
 	<property name="UNOPTIMIZED_JAR" value="hclimage.jar" />
 	<property name="OPTIMIZED_JAR" value="hclimage-o.jar" />
 	<import file="${dirOffset}/commontargets.xml" />
 
-	<target depends="init" name="_init">
+	<!--<target depends="init" name="_init">
 		<fileset id="jars.to.include" dir="${libpath}" includes="gp-modules.jar forms-* Jama-1.0.2.jar trove.jar" />
-	</target>
+	</target>-->
 
-	<target depends="package-o" name="create-zip">
+	<!--<target depends="package-o" name="create-zip">-->
+	<target name="create-zip" depends="init">
 		<antcall target="prezip" />
 		<zip destfile="${dest.dir}/${ant.project.name}.zip" whenempty="fail" defaultexcludes="true">
 			<fileset dir="." includes="manifest, *.pdf" />
-			<fileset dir=".." includes="${OPTIMIZED_JAR}" />
+			<!--<fileset dir=".." includes="${OPTIMIZED_JAR}" />-->
+			<fileset dir="." includes="${OPTIMIZED_JAR}" />
 		</zip>
 		<antcall target="postzip" />
 	</target>
 
-	<target name="package" depends="_init" description="Builds unoptimzed jar file">
+	<!--<target name="package" depends="_init" description="Builds unoptimzed jar file">
 
 		<delete file="${UNOPTIMIZED_JAR}" />
 		<jar destfile="${UNOPTIMIZED_JAR}">
@@ -29,9 +33,9 @@
 				<attribute name="Main-Class" value="org.genepattern.module.hclimage.RunHCLImage" />
 			</manifest>
 		</jar>
-	</target>
+	</target>-->
 
-	<target name="package-o" depends="package" description="Builds shrunk jar file">
+	<!--<target name="package-o" depends="package" description="Builds shrunk jar file">
 		<delete file="../${OPTIMIZED_JAR}" />
 		<java maxmemory="1024m" classname="jshrink.Jshrink" fork="true">
 			<arg line="${UNOPTIMIZED_JAR} -o ../${OPTIMIZED_JAR} -license '12/25/2006 Stan Diamond ZEGRNVXBJLIAEIKM' -keepPublic -keepPackage -keepPrivate -keepProtected -noRenameClasses -noRenamePackage -noRenamePath -noRenamePrivate -noRenameProtected -noRenamePublic -keep 'org.apache.axis.?' -keep 'org.genepattern.io.?' -keep 'org.freehep.graphicsio.?' -keep 'javax.media.jai.?' -keep 'javax.media.?' -keep 'com.sun.media.jai.?'" />
@@ -39,9 +43,9 @@
 				<pathelement location="../lib/jshrink.jar" />
 			</classpath>
 		</java>
-	</target>
+	</target>-->
 
-	<target depends="_init" name="run">
+	<!--<target depends="_init" name="run">
 		<java maxmemory="512m" classname="org.genepattern.module.hclimage.RunHCLImage" fork="true" classpath="../${OPTIMIZED_JAR}">
 			<sysproperty key="java.awt.headless" value="true" />
 			<arg value="test/all_aml_train-preprocessed.cdt" />
@@ -50,9 +54,9 @@
 			<arg value="-xtest/all_aml_train-preprocessed.gtr" />
 			<arg value="-ytest/all_aml_train-preprocessed.atr" />
 		</java>
-	</target>
+	</target>-->
 
-	<target depends="_init" name="run2">
+	<!--<target depends="_init" name="run2">
 		<java maxmemory="512m" classname="org.genepattern.module.hclimage.RunHCLImage" fork="true">
 			<classpath>
 				<fileset refid="genecruiser.jars" />
@@ -66,6 +70,6 @@
 			<arg value="-xtest/all_aml_train-preprocessed.gtr" />
 			<arg value="-ytest/all_aml_train-preprocessed.atr" />
 		</java>
-	</target>
+	</target>-->
 
 </project>
