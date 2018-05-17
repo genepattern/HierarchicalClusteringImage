@@ -2,7 +2,7 @@
 <!-- # I have commented out sections that would build the jar from source, as that does not work -->
 
 <project basedir="." default="create-zip" name="HierarchicalClusteringImage">
-	<property name="dirOffset" value="../" />
+	<property name="dirOffset" value="../common_module_code" />
 	<property name="UNOPTIMIZED_JAR" value="hclimage.jar" />
 	<property name="OPTIMIZED_JAR" value="hclimage-o.jar" />
 	<import file="${dirOffset}/commontargets.xml" />
