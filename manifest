@@ -6,6 +6,7 @@ LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:0007
 author=Joshua Gould, Broad Institute
 commandLine=<java> -Djava.awt.headless\=true <java_flags> -jar <libdir>hclimage-o.jar <cdt> <output> <output.format> -r<row.size> -c<column.size> -g<show.grid> -l<grid.color> -a<show.row.descriptions> -s<show.row.names> -f<rows.to.highlight> -h<row.highlight.color> -n<color.scheme> -m<color.palette> -x<gtr> -y<atr> -u<use.color.gradient>
 cpuType=any
+job.docker.image=genepattern/docker-java18\:0.1
 description=Creates an image of the dendrogram generated from HierarchicalClustering
 fileFormat=jpeg;png;tiff;bmp;eps
 language=Java
@@ -140,9 +141,9 @@ quality=production
 requiredPatchLSIDs=
 requiredPatchURLs=
 serializedModel=
-taskDoc=
+taskDoc= HierarchicalClusteringImage.pdf
 taskType=Image Creators
 userid=gp-help@broad.mit.edu
-version=Fixed row/column size transposing
+version=updated to indicate docker image & doc
 
 publicationDate=11/16/2012 15\:29 
