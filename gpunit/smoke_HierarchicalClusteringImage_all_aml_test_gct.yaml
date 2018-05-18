@@ -13,8 +13,6 @@ params:
     grid.color: "black"
     show.row.descriptions: "no"
     show.row.names: "yes"
-    rows.to.highlight: "" 
-    row.highlight.color: "red"
     color.scheme: "row normalized"
     color.palette: ""
     use.color.gradient: "no"
