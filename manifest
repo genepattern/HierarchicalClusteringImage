@@ -128,6 +128,6 @@ serializedModel=
 taskDoc= HierarchicalClusteringImage.pdf
 taskType=Image Creators
 userid=gp-help@broad.mit.edu
-version=removed non-functional rows to highlight parameter
+version=removed non-functional rows to highlight parameter, removed invalid .esp output option, added genepattern/docker-java17:0.12 to manifest
 
 publicationDate=11/16/2012 15:29 
