@@ -1,3 +1,5 @@
+#updated after building 3.4
+#Fri, 01 Jun 2018 14:38:12 -0400
 #updated after building 4.3
 #Mon, 21 May 2018 17:40:21 -0400
 #updated after building 3.2
@@ -10,4 +12,4 @@
 #Fri, 16 Nov 2012 17:07:20 -0500
 #prerelease version number
 #Fri Mar 16 13:31:56 EDT 2007
-prerelease.number=4
+prerelease.number=5
