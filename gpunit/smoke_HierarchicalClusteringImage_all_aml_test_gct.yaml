@@ -13,7 +13,6 @@ params:
     show.row.names: "yes"
     color.scheme: "row normalized"
     use.color.gradient: "no"
-    
 
 assertions:
     jobStatus: success
